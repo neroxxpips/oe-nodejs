@@ -46,6 +46,6 @@ jobs:
         run: |
           sed -i 's/name_space/${{ env.NAMESPACE }}/' deploy/namespace.yaml
           kubectl apply -f deploy/namespace.yaml
-          kubectl apply -f deploy/deployment.yaml -f deploy/service.yaml -n ${{ env.NAMEPACE }}
+          kubectl apply -f deploy/deployment.yaml -f deploy/service.yaml --namespace ${{ env.NAMESPACE }}
 
       

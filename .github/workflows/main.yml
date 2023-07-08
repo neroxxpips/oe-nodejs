@@ -38,12 +38,12 @@ jobs:
           aws-region: 'us-east-1'
 
       - name: Configure kubectl
-        run: aws eks update-kubeconfig --region $REGION  --name $CLUSTER_NAME
+        run: aws eks update-kubeconfig --region ${{ env.REGION }}  --name ${{ env.CLUSTER_NAME }}
 
       - name: Deploy to EKS
         run: |
-          sed -i 's/name_space/$NAMESPACE/' deploy/namespace.yaml
+          sed -i 's/name_space/${{ env.NAMEPACE }}/' deploy/namespace.yaml
           kubectl apply -f deploy/namespace.yaml
-          kubectl apply -f deploy/deployment.yaml -f deploy/service.yaml -n $NAMEPACES
+          kubectl apply -f deploy/deployment.yaml -f deploy/service.yaml -n ${{ env.NAMEPACE }}
 
       

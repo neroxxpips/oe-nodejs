@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  DOCKER_REGISTRY_URL: 'https://hub.docker.com'
+  DOCKER_REGISTRY_URL: 'https://registry-1.docker.io/v2/'
   DOCKER_REGISTRY: 'neroxxpips'
   DOCKER_IMAGE_NAME: 'oe-nodejs2'
   DOCKER_IMAGE_TAG: 'latest'

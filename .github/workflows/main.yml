@@ -6,7 +6,8 @@ on:
       - main
 
 env:
-  DOCKER_REGISTRY: 'https://hub.docker.com'
+  DOCKER_REGISTRY_URL: 'https://hub.docker.com'
+  DOCKER_REGISTRY: 'neroxxpips'
   DOCKER_IMAGE_NAME: 'oe-nodejs2'
   DOCKER_IMAGE_TAG: 'latest'
   DOCKER_PASSWORD: ${{ secrets.DOCKERPASSWORD }}
@@ -26,7 +27,7 @@ jobs:
 
       - name: Log in to Docker registry
         run: |
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin $DOCKER_REGISTRY
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin $DOCKER_REGISTRY_URL
 
       - name: Push Docker Image
         run: docker push ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:$DOCKER_IMAGE_TAG

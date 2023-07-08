@@ -1,6 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  labels:
+    app: oe-nodejs
   name: oe-nodejs
 spec:
   replicas: 1
@@ -9,11 +11,13 @@ spec:
       app: oe-nodejs
   template:
     metadata:
+      creationTimestamp: null
       labels:
         app: oe-nodejs
     spec:
       containers:
-      - name:  oe-nodejs
-        image:  neroxxpips/nodejs:latest
+      - image: neroxxpips/oe-nodejs:latest
+        name: oe-nodejs
         ports:
-        - containerPort: 3000
+            - containerPort: 3000
+

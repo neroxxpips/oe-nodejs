@@ -38,7 +38,7 @@ jobs:
           aws-region: 'us-east-1'
 
       - name: Configure kubectl
-        run: aws eks --region $REGION update-kubeconfig --name $CLUSTER_NAME
+        run: aws eks update-kubeconfig --region $REGION  --name $CLUSTER_NAME
 
       - name: Deploy to EKS
         run: |

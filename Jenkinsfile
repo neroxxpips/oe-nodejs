@@ -9,7 +9,6 @@ pipeline {
                 DOCKER_REGISTRY = 'neroxxpips'
                 DOCKER_IMAGE_NAME = 'oe-nodejs'
                 DOCKER_IMAGE_TAG = 'latest'
-                DOCKERHUB_CREDENTIALS = credentials('dockerhub')
                 DOCKER_PASSWORD = credentials('docker-token')
                 DOCKER_USERNAME = 'neroxxpips'
             }
@@ -27,7 +26,7 @@ pipeline {
                 AWS_REGION = 'us-east-1'
             }
             steps {
-                withAWS(credentials: 'aws-credentials', region: $AWS_REGION) {
+                withAWS(credentials: 'aws-credentials', region: 'us-east-1') {
                     script {
                         sh('aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION')
                         sh 'kubectl apply -f deploy/deployment.yaml -f deploy/service.yaml'

@@ -1,0 +1,54 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  DOCKER_REGISTRY: 'neroxxpips'
+  DOCKER_IMAGE_NAME: 'oe-nodejs2'
+  DOCKER_IMAGE_TAG: 'latest'
+  DOCKER_PASSWORD: ${{ secrets.DOCKERPASSWORD }}
+  DOCKER_USERNAME: 'neroxxpips'
+  NAMESPACE: 'oe-github'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Docker Image
+        run: docker build -t ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:$DOCKER_IMAGE_TAG .
+
+      - name: Log in to Docker registry
+        run: |
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin $DOCKER_REGISTRY
+
+      - name: Push Docker Image
+        run: docker push ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:$DOCKER_IMAGE_TAG
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: 'us-east-1'
+
+      - name: Configure kubectl
+        run: aws eks --region $REGION update-kubeconfig --name $CLUSTER_NAME
+
+      - name: Deploy to EKS
+        run: |
+          sed -i 's/name_space/$NAMESPACE/' deploy/namespace.yaml
+          kubectl apply -f deploy/namespace.yaml
+          kubectl apply -f deploy/deployment.yaml -f deploy/service.yaml -n $NAMEPACES
+
+      # - name: Deploy to Kubernetes
+      #   uses: bearengineer/awscli-kubectl:latest
+      #   with:
+      #     kubeconfig: ${{ secrets.KUBECONFIG }}
+      #     args: set image deployment/${{ env.KUBE_DEPLOYMENT_NAME }} ${env.KUBE_DEPLOYMENT_NAME}=${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:${{ github.sha }} --namespace=${{ env.KUBE_NAMESPACE }}

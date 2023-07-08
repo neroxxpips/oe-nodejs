@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  DOCKER_REGISTRY: 'neroxxpips'
+  DOCKER_REGISTRY: 'https://hub.docker.com'
   DOCKER_IMAGE_NAME: 'oe-nodejs2'
   DOCKER_IMAGE_TAG: 'latest'
   DOCKER_PASSWORD: ${{ secrets.DOCKERPASSWORD }}
@@ -47,8 +47,4 @@ jobs:
           kubectl apply -f deploy/namespace.yaml
           kubectl apply -f deploy/deployment.yaml -f deploy/service.yaml -n $NAMEPACES
 
-      # - name: Deploy to Kubernetes
-      #   uses: bearengineer/awscli-kubectl:latest
-      #   with:
-      #     kubeconfig: ${{ secrets.KUBECONFIG }}
-      #     args: set image deployment/${{ env.KUBE_DEPLOYMENT_NAME }} ${env.KUBE_DEPLOYMENT_NAME}=${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:${{ github.sha }} --namespace=${{ env.KUBE_NAMESPACE }}
+      

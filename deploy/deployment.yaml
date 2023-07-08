@@ -16,7 +16,7 @@ spec:
         app: oe-nodejs
     spec:
       containers:
-      - image: neroxxpips/oe-nodejs:latest
+      - image: neroxxpips/oe-nodejs2:latest
         name: oe-nodejs
         ports:
             - containerPort: 3000

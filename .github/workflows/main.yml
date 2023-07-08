@@ -13,6 +13,8 @@ env:
   DOCKER_PASSWORD: ${{ secrets.DOCKERPASSWORD }}
   DOCKER_USERNAME: 'neroxxpips'
   NAMESPACE: 'oe-github'
+  REGION: 'us-east-1'
+  CLUSTER_NAME: 'OE-DevOps-cluster'
 
 jobs:
   build-and-deploy:
